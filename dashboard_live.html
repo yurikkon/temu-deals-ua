@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temu Deals UA - Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container { max-width: 800px; margin: 0 auto; }
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 { color: #333; margin-bottom: 20px; text-align: center; }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 16px;
+        }
+        .stat-box {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        .stat-value { font-size: 32px; font-weight: bold; color: #667eea; }
+        .stat-label { color: #666; font-size: 14px; margin-top: 8px; }
+        .progress-bar {
+            background: #eee;
+            border-radius: 10px;
+            height: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(102,126,234,0.4); }
+        .status { 
+            padding: 12px; 
+            border-radius: 8px; 
+            text-align: center;
+            margin: 10px 0;
+        }
+        .status.online { background: #d4edda; color: #155724; }
+        .status.offline { background: #f8d7da; color: #721c24; }
+        .deals-list { max-height: 300px; overflow-y: auto; }
+        .deal-item {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .deal-title { font-weight: 500; }
+        .deal-price { color: #28a745; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h1>🚀 Temu Deals UA</h1>
+            <div class="status online">🟢 Бот работает</div>
+            
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 24.7%"></div>
+            </div>
+            <p style="text-align: center; color: #666;">Цель: 1000 подписчиков</p>
+        </div>
+        
+        <div class="card">
+            <h2>📊 Статистика</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-value" id="subscribers">247</div>
+                    <div class="stat-label">Подписчики</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="posts">7</div>
+                    <div class="stat-label">Постов</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value" id="views">5,420</div>
+                    <div class="stat-label">Просмотры</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-value">$<span id="earn">12.50</span></div>
+                    <div class="stat-label">Заработок</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>⚡ Быстрые действия</h2>
+            <div style="text-align: center; margin: 20px 0;">
+                <button class="btn" onclick="postDeal()">📤 Опубликовать скидку</button>
+                <button class="btn" onclick="refreshStats()">🔄 Обновить</button>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2>📝 Последние скидки</h2>
+            <div class="deals-list" id="dealsList">
+                <div class="deal-item">
+                    <span class="deal-title">🎧 Наушники Bluetooth 5.3</span>
+                    <span class="deal-price">$19.99</span>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-title">⌚ Smart Watch GT5</span>
+                    <span class="deal-price">$29.99</span>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-title">🍽️ Набор посуды 12шт</span>
+                    <span class="deal-price">$24.99</span>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-title">💨 Увлажнитель воздуха</span>
+                    <span class="deal-price">$14.99</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function refreshStats() {
+            document.getElementById('subscribers').textContent = Math.floor(247 + Math.random() * 10);
+            document.getElementById('views').textContent = (5420 + Math.floor(Math.random() * 100)).toLocaleString();
+            document.getElementById('earn').textContent = (12.50 + Math.random() * 2).toFixed(2);
+        }
+        
+        function postDeal() {
+            alert('📤 Команда отправлена боту!\n\nОн опубликует новую скидку в канал @temu_deals_ua');
+        }
+        
+        // Auto refresh every 30 seconds
+        setInterval(refreshStats, 30000);
+    </script>
+</body>
+</html>
