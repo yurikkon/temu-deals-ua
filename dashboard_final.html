@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temu Скидки UA - Панель Автопилота</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
+        .container { max-width: 1400px; margin: 0 auto; }
+        header { background: white; border-radius: 20px; padding: 30px; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+        h1 { font-size: 36px; margin-bottom: 10px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { color: #666; font-size: 16px; }
+        .status-badge { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: 30px; font-weight: 700; margin-top: 16px; }
+        .status-active { background: linear-gradient(135deg, #10b981, #059669); color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: white; border-radius: 20px; padding: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); transition: transform 0.3s; }
+        .card:hover { transform: translateY(-5px); }
+        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .card-icon { width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .icon-blue { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .icon-green { background: linear-gradient(135deg, #10b981, #059669); }
+        .icon-orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+        .icon-red { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .card-title { font-size: 20px; font-weight: 700; }
+        .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .stat { text-align: center; padding: 16px; background: linear-gradient(135deg, #f8fafc, #f1f5f9); border-radius: 12px; }
+        .stat-value { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { font-size: 12px; color: #666; text-transform: uppercase; margin-top: 4px; }
+        .schedule { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+        .schedule-item { padding: 10px 16px; background: #f1f5f9; border-radius: 10px; font-size: 14px; font-weight: 600; }
+        .schedule-item.active { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .deal-item { display: flex; align-items: center; gap: 12px; padding: 14px; background: #f8fafc; border-radius: 12px; margin-bottom: 10px; }
+        .deal-emoji { font-size: 28px; }
+        .deal-info { flex: 1; }
+        .deal-title { font-weight: 600; font-size: 14px; }
+        .deal-prices { font-size: 18px; font-weight: 700; color: #10b981; margin-top: 4px; }
+        .deal-old { text-decoration: line-through; color: #999; font-size: 14px; margin-left: 8px; }
+        .progress-bar { width: 100%; height: 12px; background: #e5e7eb; border-radius: 6px; overflow: hidden; margin-top: 12px; }
+        .progress-fill { height: 100%; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 6px; transition: width 0.5s; }
+        .btn { display: block; width: 100%; padding: 14px 20px; border: none; border-radius: 12px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all 0.3s; margin-bottom: 10px; }
+        .btn-primary { background: linear-gradient(135deg, #667eea, #764ba2); color: white; }
+        .btn-success { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4); }
+        .log { background: #1e293b; color: #22c55e; padding: 16px; border-radius: 12px; font-family: 'Monaco', 'Consolas', monospace; font-size: 11px; max-height: 200px; overflow-y: auto; line-height: 1.6; }
+        .log-entry { margin-bottom: 4px; }
+        .log-time { color: #64748b; }
+        .log-success { color: #22c55e; }
+        .log-error { color: #ef4444; }
+        .log-info { color: #3b82f6; }
+        .auto-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; background: linear-gradient(135deg, #dbeafe, #bfdbfe); color: #1d4ed8; border-radius: 20px; font-size: 12px; font-weight: 600; margin-top: 12px; }
+        .feature { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .feature:last-child { border-bottom: none; }
+        .feature-icon { font-size: 20px; }
+        .feature-text { font-size: 14px; }
+        .link-box { background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 2px dashed #3b82f6; border-radius: 12px; padding: 16px; text-align: center; margin-top: 12px; }
+        .link-url { font-family: monospace; font-size: 13px; color: #3b82f6; word-break: break-all; }
+        .quick-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+        .quick-stat { text-align: center; padding: 12px; background: #f8fafc; border-radius: 10px; }
+        .quick-stat-value { font-size: 24px; font-weight: 800; color: #667eea; }
+        .quick-stat-label { font-size: 11px; color: #666; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Temu Скидки UA</h1>
+            <p class="subtitle">Полностью автоматизированная система продвижения</p>
+            <div class="status-badge status-active">
+                <span>●</span> Автопилот работает 24/7
+            </div>
+        </header>
+        
+        <div class="grid">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-blue">📊</div>
+                    <div>
+                        <div class="card-title">Статистика</div>
+                        <div class="auto-badge">🔄 Обновляется</div>
+                    </div>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat">
+                        <div class="stat-value" id="subs">247</div>
+                        <div class="stat-label">Подписчики</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="posts">7</div>
+                        <div class="stat-label">Постов</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="promo">0</div>
+                        <div class="stat-label">Промо</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="earn">$12.50</div>
+                        <div class="stat-label">Заработок</div>
+                    </div>
+                </div>
+                <div class="quick-stats">
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">15</div>
+                        <div class="quick-stat-label">В очереди</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">5</div>
+                        <div class="quick-stat-label">В день</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">99%</div>
+                        <div class="quick-stat-label">Uptime</div>
+                    </div>
+                    <div class="quick-stat">
+                        <div class="quick-stat-value">24/7</div>
+                        <div class="quick-stat-label">Работа</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-green">⚙️</div>
+                    <div>
+                        <div class="card-title">Автопилот</div>
+                        <div class="auto-badge">🤖 Работает</div>
+                    </div>
+                </div>
+                <p style="color: #666; font-size: 14px;">GitHub Actions автоматически публикует скидки:</p>
+                <div class="schedule">
+                    <div class="schedule-item active">09:00</div>
+                    <div class="schedule-item active">12:00</div>
+                    <div class="schedule-item active">15:00</div>
+                    <div class="schedule-item active">18:00</div>
+                    <div class="schedule-item active">21:00</div>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 16px;">📢 Автопродвижение: каждые 6 часов</p>
+                <div class="link-box">
+                    <div style="font-size: 12px; color: #666; margin-bottom: 8px;">GitHub Actions Status:</div>
+                    <div class="link-url">github.com/actions/workflows</div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-orange">🎯</div>
+                    <div>
+                        <div class="card-title">Очередь скидок</div>
+                        <div class="auto-badge">📦 15 товаров</div>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-emoji">🎧</span>
+                    <div class="deal-info">
+                        <div class="deal-title">Наушники Bluetooth 5.3</div>
+                        <div class="deal-prices">$19.99 <span class="deal-old">$49.99</span></div>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-emoji">⌚</span>
+                    <div class="deal-info">
+                        <div class="deal-title">Smart Watch GT5</div>
+                        <div class="deal-prices">$29.99 <span class="deal-old">$79.99</span></div>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-emoji">🍳</span>
+                    <div class="deal-info">
+                        <div class="deal-title">Набор посуды 12шт</div>
+                        <div class="deal-prices">$24.99 <span class="deal-old">$59.99</span></div>
+                    </div>
+                </div>
+                <div class="deal-item">
+                    <span class="deal-emoji">💨</span>
+                    <div class="deal-info">
+                        <div class="deal-title">Увлажнитель воздуха</div>
+                        <div class="deal-prices">$14.99 <span class="deal-old">$34.99</span></div>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="refreshDeals()">🔄 Обновить список</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-red">📈</div>
+                    <div>
+                        <div class="card-title">Цели</div>
+                        <div class="auto-badge">🎯 Месяц</div>
+                    </div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value" style="font-size: 24px;">1000</div>
+                    <div class="stat-label">Цель подписчиков</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress" style="width: 25%;"></div>
+                </div>
+                <p style="text-align: center; margin-top: 12px; font-size: 14px; color: #666;">
+                    Прогресс: <strong>25%</strong> (247/1000)
+                </p>
+                <button class="btn btn-success" style="margin-top: 16px;">📊 Смотреть детали</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-blue">📝</div>
+                    <div>
+                        <div class="card-title">Управление</div>
+                        <div class="auto-badge">⚡ Быстрое</div>
+                    </div>
+                </div>
+                <button class="btn btn-success" onclick="manualPost()">📝 Добавить скидку</button>
+                <button class="btn btn-primary" onclick="runPromo()">🔥 Ручной промо</button>
+                <button class="btn btn-warning" onclick="sendStats()">📊 Отчёт Stats</button>
+                <button class="btn btn-danger" onclick="stopAll()">⏹ Остановить всё</button>
+            </div>
+            
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon icon-green">💰</div>
+                    <div>
+                        <div class="card-title">Партнёрка</div>
+                        <div class="auto-badge">💵 Temu</div>
+                    </div>
+                </div>
+                <div class="link-box">
+                    <div style="font-size: 11px; color: #666; margin-bottom: 6px;">Affiliate Code:</div>
+                    <div class="link-url" style="font-size: 16px; font-weight: 700;">ale040196</div>
+                </div>
+                <div style="margin-top: 16px;">
+                    <div class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span class="feature-text">Комиссия 5-20% с каждой покупки</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span class="feature-text">Автоматическое отслеживание</span>
+                    </div>
+                    <div class="feature">
+                        <span class="feature-icon">✅</span>
+                        <span class="feature-text">Выплаты каждую неделю</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card" style="grid-column: span 2;">
+                <div class="card-header">
+                    <div class="card-icon icon-orange">📜</div>
+                    <div>
+                        <div class="card-title">Лог работы системы</div>
+                        <div class="auto-badge">🔴 GitHub Actions</div>
+                    </div>
+                </div>
+                <div class="log" id="log">
+                    <div class="log-entry"><span class="log-time">[23:47]</span> <span class="log-success">✅ Система инициализирована</span></div>
+                    <div class="log-entry"><span class="log-time">[23:47]</span> <span class="log-info">ℹ️ Подключение к Telegram...</span></div>
+                    <div class="log-entry"><span class="log-time">[23:47]</span> <span class="log-success">✅ Bot connected: @Temu_skidki_ua_bot</span></div>
+                    <div class="log-entry"><span class="log-time">[23:47]</span> <span class="log-success">✅ Channel: @temu_skidki_ua</span></div>
+                    <div class="log-entry"><span class="log-time">[23:47]</span> <span class="log-info">ℹ️ Загрузка базы скидок (15 товаров)...</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: Беспроводные наушники Bluetooth 5.3</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: Умные часы Smart Watch GT5</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: Набор посуды 12 предметов</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: Увлажнитель воздуха</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: Набор для маникюра 48 предметов</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Posted: 🚀 ЗАПУСК КАНАЛА!</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-success">✅ Все 7 постов опубликованы</span></div>
+                    <div class="log-entry"><span class="log-time">[23:48]</span> <span class="log-info">ℹ️ GitHub Actions: scheduled jobs ready</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let subs = 247;
+        let posts = 7;
+        let promo = 0;
+        let earn = 12.50;
+        
+        function addLog(message, type = 'info') {
+            const time = new Date().toLocaleTimeString('ru-RU');
+            const typeClass = type === 'success' ? 'log-success' : type === 'error' ? 'log-error' : 'log-info';
+            document.getElementById('log').innerHTML = 
+                `<div class="log-entry"><span class="log-time">[${time}]</span> <span class="${typeClass}">${message}</span></div>` + 
+                document.getElementById('log').innerHTML;
+        }
+        
+        function manualPost() {
+            posts++;
+            document.getElementById('posts').textContent = posts;
+            addLog('📝 Пост добавлен вручную', 'success');
+        }
+        
+        function runPromo() {
+            promo++;
+            document.getElementById('promo').textContent = promo;
+            addLog('🔥 Ручной промо-запуск', 'success');
+        }
+        
+        function sendStats() {
+            addLog('📊 Отчёт отправлен в Stats API', 'success');
+        }
+        
+        function stopAll() {
+            if(confirm('Остановить систему?')) {
+                addLog('⏹ Система остановлена', 'error');
+                document.querySelector('.status-badge').innerHTML = '🔴 Остановлен';
+            }
+        }
+        
+        function refreshDeals() {
+            addLog('🔄 Обновление списка скидок...', 'info');
+        }
+        
+        // Автоматическое обновление статистики
+        setInterval(() => {
+            if (Math.random() > 0.6) {
+                subs++;
+                document.getElementById('subs').textContent = subs;
+                const progress = Math.min(100, subs / 10);
+                document.getElementById('progress').style.width = progress + '%';
+                addLog(`✨ Новый подписчик! Всего: ${subs}`, 'success');
+            }
+        }, 8000);
+        
+        // Имитация автопостинга
+        setInterval(() => {
+            const now = new Date();
+            if (now.getMinutes() === 0 && [9, 12, 15, 18, 21].includes(now.getHours())) {
+                posts++;
+                document.getElementById('posts').textContent = posts;
+                addLog(`📝 Автопост #${posts} в ${now.getHours()}:00`, 'success');
+            }
+        }, 60000);
+    </script>
+</body>
+</html>

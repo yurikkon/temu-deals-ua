@@ -1,0 +1,33 @@
+{
+  "name": "TemuDealsUA",
+  "description": "Telegram канал со скидками на Temu с автопостингом",
+  "repository": "https://github.com/yourusername/temu-deals-bot",
+  "env": {
+    "TELEGRAM_TOKEN": {
+      "description": "Токен Telegram бота от @BotFather",
+      "required": true
+    },
+    "CHANNEL_ID": {
+      "description": "ID канала, например @temu_skidki_ua",
+      "required": true
+    },
+    "TEMU_AFFILIATE_CODE": {
+      "description": "Ваш партнёрский код от Temu Affiliate",
+      "required": true
+    },
+    "POSTING_TIMES": {
+      "description": "Время постов через запятую",
+      "value": "09:00,12:00,15:00,18:00,21:00"
+    }
+  },
+  "build": {
+    "command": "pip install -r requirements.txt",
+    "runner": "python autoposter.py"
+  },
+  "envVars": [
+    {
+      "key": "PYTHON_VERSION",
+      "value": "3.11"
+    }
+  ]
+}

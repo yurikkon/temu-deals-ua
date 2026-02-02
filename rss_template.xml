@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Temu Скидки UA - Лучшие акции</title>
+    <description>Лучшие скидки и акции на Temu с доставкой в Украину</description>
+    <link>https://t.me/temu_skidki_ua</link>
+    <atom:link href="https://yoursite.com/rss.xml" rel="self"/>
+    <language>ru</language>
+    <lastBuildDate>Sat, 01 Feb 2026 22:00:00 +0000</lastBuildDate>
+    
+    <!-- Sample deal items -->
+    <item>
+      <title>Беспроводные наушники с шумоподавлением</title>
+      <description>&lt;b&gt;Цена:&lt;/b&gt; $19.99 (скидка 60%)&lt;br/&gt;
+      &lt;a href="https://temu.com/ua/headphones?_r=AFFILIATE_CODE"&gt;Купить&lt;/a&gt;</description>
+      <link>https://temu.com/ua/headphones</link>
+      <pubDate>Sat, 01 Feb 2026 20:00:00 +0000</pubDate>
+      <category>Электроника</category>
+    </item>
+    
+    <item>
+      <title>Умные часы с пульсометром</title>
+      <description>&lt;b&gt;Цена:&lt;/b&gt; $29.99 (скидка 63%)&lt;br/&gt;
+      &lt;a href="https://temu.com/ua/smartwatch?_r=AFFILIATE_CODE"&gt;Купить&lt;/a&gt;</description>
+      <link>https://temu.com/ua/smartwatch</link>
+      <pubDate>Sat, 01 Feb 2026 19:00:00 +0000</pubDate>
+      <category>Электроника</category>
+    </item>
+  </channel>
+</rss>

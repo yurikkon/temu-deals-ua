@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Temu Скидки UA</title>
+    <description>Лучшие скидки на Temu с доставкой в Украину</description>
+    <link>https://t.me/temu_skidki_ua</link>
+    <language>ru</language>
+    <lastBuildDate>Sun, 02 Feb 2026 10:00:00 +0000</lastBuildDate>
+    
+    <!-- Deal items will be added here -->
+    <item>
+      <title>🔥 Беспроводные наушники Bluetooth 5.3</title>
+      <description>Шумоподавление, 40 часов работы</description>
+      <link>https://www.temu.com/ua/electronics/headphones?affiliate=USER_CODE</link>
+      <pubDate>Sun, 02 Feb 2026 10:00:00 +0000</pubDate>
+      <category>Электроника</category>
+    </item>
+    
+    <item>
+      <title>🔥 Умные часы Smart Watch GT5</title>
+      <description>Пульсометр, шагомер, уведомления</description>
+      <link>https://www.temu.com/ua/electronics/smartwatch?affiliate=USER_CODE</link>
+      <pubDate>Sun, 02 Feb 2026 09:00:00 +0000</pubDate>
+      <category>Электроника</category>
+    </item>
+    
+    <item>
+      <title>🔥 Набор для маникюра 48 предметов</title>
+      <description>Профессиональный нейл-арт набор</description>
+      <link>https://www.temu.com/ua/beauty/manicure?affiliate=USER_CODE</link>
+      <pubDate>Sun, 02 Feb 2026 08:00:00 +0000</pubDate>
+      <category>Красота</category>
+    </item>
+    
+    <item>
+      <title>🔥 Постельное белье 6 предметов</title>
+      <description>Хлопок, размер 200x220</description>
+      <link>https://www.temu.com/ua/home/bedding?affiliate=USER_CODE</link>
+      <pubDate>Sun, 02 Feb 2026 07:00:00 +0000</pubDate>
+      <category>Дом</category>
+    </item>
+    
+    <item>
+      <title>🔥 Спортивный костюм Oversize</title>
+      <description>Хлопок, 5 цветов</description>
+      <link>https://www.temu.com/ua/fashion/sportswear?affiliate=USER_CODE</link>
+      <pubDate>Sun, 02 Feb 2026 06:00:00 +0000</pubDate>
+      <category>Одежда</category>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temu Скидки UA - Панель управления</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        header h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        header p {
+            color: #666;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        
+        .status-active {
+            background: #10b981;
+            color: white;
+        }
+        
+        .status-inactive {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .stat:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-value {
+            font-weight: 700;
+            font-size: 24px;
+            color: #667eea;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+        
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+        
+        .deal-card {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 12px;
+        }
+        
+        .deal-card h3 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+        
+        .deal-price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981;
+        }
+        
+        .deal-old-price {
+            text-decoration: line-through;
+            color: #999;
+            margin-left: 8px;
+        }
+        
+        .schedule-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .schedule-time {
+            font-weight: 700;
+            color: #667eea;
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 16px 24px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .notification-success {
+            background: #10b981;
+        }
+        
+        .notification-error {
+            background: #ef4444;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Temu Скидки UA - Панель управления</h1>
+            <p>Автоматический постинг скидок и вирусное продвижение</p>
+            <span class="status-badge status-active pulse" id="botStatus">🟢 Бот активен</span>
+        </header>
+        
+        <div class="grid">
+            <!-- Статистика -->
+            <div class="card">
+                <h2>📊 Статистика канала</h2>
+                <div class="stat">
+                    <span class="stat-label">Подписчики</span>
+                    <span class="stat-value" id="subscribers">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Постов сегодня</span>
+                    <span class="stat-value" id="postsToday">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Переходов по ссылкам</span>
+                    <span class="stat-value" id="clicks">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Заработок</span>
+                    <span class="stat-value" id="earnings">$0.00</span>
+                </div>
+            </div>
+            
+            <!-- Быстрые действия -->
+            <div class="card">
+                <h2>⚡ Быстрые действия</h2>
+                <div class="btn-group">
+                    <button class="btn btn-success" onclick="postDeal()">📝 Добавить скидку</button>
+                    <button class="btn btn-primary" onclick="runPromo()">🔥 Запустить рекламу</button>
+                    <button class="btn btn-danger" onclick="stopBot()">⏹ Остановить бота</button>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <div class="form-group">
+                        <label>📝 Добавить новую скидку</label>
+                        <input type="text" id="dealTitle" placeholder="Название товара">
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="form-group">
+                            <input type="text" id="dealPrice" placeholder="Цена ($)">
+                        </div>
+                        <div class="form-group">
+                            <input type="text" id="dealOldPrice" placeholder="Старая цена">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="dealLink" placeholder="Ссылка на товар">
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="addDeal()">Добавить в очередь</button>
+                </div>
+            </div>
+            
+            <!-- Расписание -->
+            <div class="card">
+                <h2>📅 Расписание постов</h2>
+                <div id="scheduleList">
+                    <div class="schedule-item">
+                        <span>09:00</span>
+                        <span style="color: #10b981;">✓ Ожидает</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span>12:00</span>
+                        <span style="color: #10b981;">✓ Ожидает</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span>15:00</span>
+                        <span style="color: #10b981;">✓ Ожидает</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span>18:00</span>
+                        <span style="color: #10b981;">✓ Ожидает</span>
+                    </div>
+                    <div class="schedule-item">
+                        <span>21:00</span>
+                        <span style="color: #10b981;">✓ Ожидает</span>
+                    </div>
+                </div>
+                
+                <div style="margin-top: 16px;">
+                    <label style="font-weight: 600;">🔥 Интенсивность рекламы</label>
+                    <select id="promoIntensity" style="width: 100%; padding: 12px; border-radius: 8px; margin-top: 8px;">
+                        <option value="low">Низкая (5 каналов/час)</option>
+                        <option value="medium" selected>Средняя (15 каналов/час)</option>
+                        <option value="high">Высокая (30 каналов/час)</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Очередь скидок -->
+            <div class="card">
+                <h2>🎯 Очередь скидок</h2>
+                <div id="dealsQueue">
+                    <p style="color: #666; font-size: 14px;">Загрузка...</p>
+                </div>
+            </div>
+            
+            <!-- Настройки -->
+            <div class="card">
+                <h2>⚙️ Настройки</h2>
+                <div class="form-group">
+                    <label>Токен бота</label>
+                    <input type="password" id="botToken" placeholder="***">
+                </div>
+                <div class="form-group">
+                    <label>ID канала</label>
+                    <input type="text" id="channelId" value="@temu_skidki_ua">
+                </div>
+                <div class="form-group">
+                    <label>Temu Affiliate код</label>
+                    <input type="text" id="affiliateCode" placeholder="your_code">
+                </div>
+                <button class="btn btn-primary" style="width: 100%;" onclick="saveSettings()">💾 Сохранить настройки</button>
+            </div>
+            
+            <!-- Продвижение -->
+            <div class="card">
+                <h2>📢 Продвижение</h2>
+                <div class="stat">
+                    <span class="stat-label">Каналов охвачено</span>
+                    <span class="stat-value" id="channelsPromoted">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Обменов постами</span>
+                    <span class="stat-value" id="exchanges">0</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="promoProgress" style="width: 0%;"></div>
+                </div>
+                <p style="font-size: 12px; color: #666; margin-top: 8px;">Прогресс месячной кампании</p>
+                
+                <div style="margin-top: 16px;">
+                    <button class="btn btn-primary" style="width: 100%;" onclick="startPromoCampaign()">
+                        🚀 Запустить кампанию
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Имитация работы панели
+        let stats = {
+            subscribers: 247,
+            postsToday: 5,
+            clicks: 89,
+            earnings: 12.50
+        };
+        
+        let dealsQueue = [
+            { title: 'Наушники Bluetooth 5.3', price: '$19.99', oldPrice: '$49.99', status: 'queued' },
+            { title: 'Умные часы GT5', price: '$29.99', oldPrice: '$79.99', status: 'queued' },
+            { title: 'Набор посуды', price: '$24.99', oldPrice: '$59.99', status: 'queued' }
+        ];
+        
+        function updateStats() {
+            document.getElementById('subscribers').textContent = stats.subscribers.toLocaleString();
+            document.getElementById('postsToday').textContent = stats.postsToday;
+            document.getElementById('clicks').textContent = stats.clicks;
+            document.getElementById('earnings').textContent = '$' + stats.earnings.toFixed(2);
+        }
+        
+        function renderDeals() {
+            const container = document.getElementById('dealsQueue');
+            if (dealsQueue.length === 0) {
+                container.innerHTML = '<p style="color: #666;">Очередь пуста</p>';
+                return;
+            }
+            
+            container.innerHTML = dealsQueue.map((deal, i) => `
+                <div class="deal-card">
+                    <h3>${deal.title}</h3>
+                    <span class="deal-price">${deal.price}</span>
+                    <span class="deal-old-price">${deal.oldPrice}</span>
+                    <p style="color: #10b981; font-size: 12px; margin-top: 8px;">✓ В очереди</p>
+                </div>
+            `).join('');
+        }
+        
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        function addDeal() {
+            const title = document.getElementById('dealTitle').value;
+            const price = document.getElementById('dealPrice').value;
+            const oldPrice = document.getElementById('dealOldPrice').value;
+            
+            if (!title || !price) {
+                showNotification('Заполните название и цену!', 'error');
+                return;
+            }
+            
+            dealsQueue.push({
+                title,
+                price: '$' + price,
+                oldPrice: oldPrice ? '$' + oldPrice : '',
+                status: 'queued'
+            });
+            
+            // Очистить форму
+            document.getElementById('dealTitle').value = '';
+            document.getElementById('dealPrice').value = '';
+            document.getElementById('dealOldPrice').value = '';
+            document.getElementById('dealLink').value = '';
+            
+            renderDeals();
+            showNotification('Скидка добавлена!', 'success');
+        }
+        
+        function postDeal() {
+            showNotification('Скидка опубликована!', 'success');
+            stats.postsToday++;
+            updateStats();
+        }
+        
+        function runPromo() {
+            const intensity = document.getElementById('promoIntensity').value;
+            showNotification(`Рекламная кампания запущена (${intensity})`, 'success');
+        }
+        
+        function stopBot() {
+            const status = document.getElementById('botStatus');
+            status.textContent = '🔴 Бот остановлен';
+            status.className = 'status-badge status-inactive';
+            showNotification('Бот остановлен', 'error');
+        }
+        
+        function saveSettings() {
+            showNotification('Настройки сохранены!', 'success');
+        }
+        
+        function startPromoCampaign() {
+            let channels = parseInt(document.getElementById('channelsPromoted').textContent);
+            let progress = (channels / 100) * 100;
+            document.getElementById('promoProgress').style.width = progress + '%';
+            showNotification('Кампания запущена!', 'success');
+        }
+        
+        // Инициализация
+        updateStats();
+        renderDeals();
+        
+        // Обновление статистики каждую минуту
+        setInterval(() => {
+            if (Math.random() > 0.5) {
+                stats.subscribers++;
+                document.getElementById('channelsPromoted').textContent = Math.floor(stats.subscribers / 10);
+            }
+            updateStats();
+        }, 60000);
+    </script>
+</body>
+</html>
