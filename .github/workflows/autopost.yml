@@ -1,0 +1,87 @@
+name: Temu Deals Auto-Posting
+
+on:
+  schedule:
+    # Post 5 times a day at 9, 12, 15, 18, 21 (Ukraine time UTC+2)
+    - cron: '0 7 * * *'   # 09:00 UTC
+    - cron: '0 10 * * *'  # 12:00 UTC
+    - cron: '0 13 * * *'  # 15:00 UTC
+    - cron: '0 16 * * *'  # 18:00 UTC
+    - cron: '0 19 * * *'  # 21:00 UTC
+  workflow_dispatch:
+    inputs:
+      manual_post:
+        description: 'Post a deal manually'
+        required: false
+        default: 'true'
+
+jobs:
+  post-deal:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.schedule, '*')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install python-telegram-bot requests
+
+      - name: Post deal to Telegram
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          TEMU_AFFILIATE_CODE: ${{ secrets.TEMU_AFFILIATE_CODE }}
+        run: |
+          python3 << 'EOF'
+import os
+import random
+import asyncio
+from telegram import Bot
+
+TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
+CHANNEL_ID = os.environ.get('CHANNEL_ID')
+TEMU_AFFILIATE = os.environ.get('TEMU_AFFILIATE_CODE', 'ale040196')
+
+DEALS = [
+    {'title': '🎧 Наушники Bluetooth 5.3', 'price': '$19.99', 'old': '$49.99', 'cat': 'electronics'},
+    {'title': '⌚ Smart Watch GT5', 'price': '$29.99', 'old': '$79.99', 'cat': 'electronics'},
+    {'title': '🍽️ Набор посуды 12шт', 'price': '$24.99', 'old': '$59.99', 'cat': 'home'},
+    {'title': '💨 Увлажнитель воздуха', 'price': '$14.99', 'old': '$34.99', 'cat': 'home'},
+    {'title': '💄 Набор маникюра 48шт', 'price': '$12.99', 'old': '$29.99', 'cat': 'beauty'},
+    {'title': '🎧 Наушники ANC', 'price': '$34.99', 'old': '$89.99', 'cat': 'electronics'},
+    {'title': '📱 Чехол iPhone 15', 'price': '$8.99', 'old': '$24.99', 'cat': 'electronics'},
+    {'title': '🤖 Робот-пылесос', 'price': '$49.99', 'old': '$129.99', 'cat': 'home'},
+    {'title': '💪 Фитнес-резинки', 'price': '$9.99', 'old': '$24.99', 'cat': 'sports'},
+    {'title': '☕ Кофемашина', 'price': '$29.99', 'old': '$79.99', 'cat': 'home'},
+]
+
+deal = random.choice(DEALS)
+discount = int((1 - float(deal['price'].replace('$','')) / float(deal['old'].replace('$',''))) * 100)
+
+text = f"""{deal['title']}
+
+💰 <s>{deal['old']}</s> → <b>{deal['price']}</b>
+📉 Скидка: {discount}%
+
+🔗 <a href="https://www.temu.com/ua/{deal['cat']}?_r={TEMU_AFFILIATE}">Купить на Temu</a>
+
+#{deal['cat']} #скидка #топ"""
+
+async def main():
+    bot = Bot(token=TELEGRAM_TOKEN)
+    await bot.send_message(chat_id=CHANNEL_ID, text=text, parse_mode='HTML')
+    print(f"✅ Posted: {deal['title']}")
+
+asyncio.run(main())
+EOF
+
+      - name: Report success
+        run: |
+          echo "✅ Deal posted successfully at $(date)"
