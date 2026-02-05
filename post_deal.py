@@ -6,33 +6,34 @@ from telegram import Bot
 TELEGRAM_TOKEN = os.environ.get('TELEGRAM_TOKEN')
 CHANNEL_ID = os.environ.get('CHANNEL_ID')
 TEMU_AFFILIATE = os.environ.get('TEMU_AFFILIATE_CODE', 'ale040196')
+TEMU_BASE_URL = os.environ.get('TEMU_BASE_URL', 'https://www.temu.com')
 
 # Simulated deals database
 DEALS = [
     {
         "title": "🎁 Бесплатная доставка + скидка 100₴",
         "description": "Новая акция от Temu! Получите скидку 100₴ на первый заказ + бесплатная доставка",
-        "link": f"https://temu.to/c/{TEMU_AFFILIATE}"
+        "link": f"{TEMU_BASE_URL}?referral_code={TEMU_AFFILIATE}"
     },
     {
         "title": "🔥 Скидка 50% на электронику",
         "description": "Отличные цены на гаджеты и аксессуары. Успейте заказать!",
-        "link": f"https://temu.to/c/{TEMU_AFFILIATE}"
+        "link": f"{TEMU_BASE_URL}?referral_code={TEMU_AFFILIATE}"
     },
     {
         "title": "🛍️ До -70% на одежду",
         "description": "Новая коллекция летних вещей по супер ценам",
-        "link": f"https://temu.to/c/{TEMU_AFFILIATE}"
+        "link": f"{TEMU_BASE_URL}?referral_code={TEMU_AFFILIATE}"
     },
     {
         "title": "🏠 Товары для дома -60%",
         "description": "Уют и комфорт для вашего дома по отличным ценам",
-        "link": f"https://temu.to/c/{TEMU_AFFILIATE}"
+        "link": f"{TEMU_BASE_URL}?referral_code={TEMU_AFFILIATE}"
     },
     {
         "title": "💄 Красота и уход -50%",
         "description": "Косметика и средства по уходу за собой",
-        "link": f"https://temu.to/c/{TEMU_AFFILIATE}"
+        "link": f"{TEMU_BASE_URL}?referral_code={TEMU_AFFILIATE}"
     }
 ]
 
