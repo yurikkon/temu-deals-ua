@@ -6,3 +6,8 @@ beautifulsoup4==4.12.2
 lxml==4.9.3
 python-dotenv==1.0.0
 apscheduler==3.10.4
+
+# Optional: For advanced promotion (install as needed)
+# praw==7.7.0  # Reddit API
+# tweepy==4.14.0  # Twitter API
+# facebook-sdk==3.0.0  # Facebook API

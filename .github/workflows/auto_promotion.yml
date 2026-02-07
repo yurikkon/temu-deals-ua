@@ -1,0 +1,44 @@
+name: Auto Promotion System
+
+on:
+  schedule:
+    # Кросс-постинг каждые 6 часов
+    - cron: '0 */6 * * *'
+    # Комментарии 3 раза в день
+    - cron: '0 9,14,19 * * *'
+    # SEO оптимизация раз в день
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+
+jobs:
+  promotion:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run Auto Promotion
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          CHANNEL_ID: ${{ secrets.CHANNEL_ID }}
+          TEMU_AFFILIATE_CODE: ${{ secrets.TEMU_AFFILIATE_CODE }}
+        run: |
+          python3 auto_promotion.py
+      
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: promotion-logs
+          path: temu-deals-bot/promotion_log.txt
+          retention-days: 30
