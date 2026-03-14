@@ -1,6 +1,6 @@
 """
-Temu Products Database with Real Share Links
-Реальные товары с правильными share ссылками на Temu
+Temu Products Database with Real Working Links
+Реальные товары с рабочими ссылками на Temu
 """
 
 import os
@@ -9,7 +9,8 @@ from datetime import datetime
 
 TEMU_AFFILIATE = os.environ.get('TEMU_AFFILIATE_CODE', 'ale040196')
 
-# Реальные товары с правильными share ссылками (https://share.temu.com/...)
+# Реальные товары с рабочими ссылками на Temu
+# Все ссылки ведут на поиск товаров с affiliate кодом
 PRODUCTS = [
     # Электроника и гаджеты
     {
@@ -18,7 +19,7 @@ PRODUCTS = [
         "description": "Качественные беспроводные наушники с шумоподавлением. Батарея 30+ часов. Скидка 60%!",
         "price": "₴299",
         "old_price": "₴749",
-        "link": "https://share.temu.com/PyGimJCQqwB",
+        "link": f"https://www.temu.com/ua/search?q=wireless+earbuds&refer_code={TEMU_AFFILIATE}",
         "emoji": "🎧"
     },
     {
@@ -27,7 +28,7 @@ PRODUCTS = [
         "description": "Закаленное стекло 9H для всех моделей. Легко клеится. Скидка 70%!",
         "price": "₴49",
         "old_price": "₴159",
-        "link": "https://share.temu.com/screen-protector-glass",
+        "link": f"https://www.temu.com/ua/search?q=tempered+glass&refer_code={TEMU_AFFILIATE}",
         "emoji": "🛡️"
     },
     {
@@ -36,7 +37,7 @@ PRODUCTS = [
         "description": "Power Bank 20000mAh с быстрой зарядкой. Скидка 50%!",
         "price": "₴199",
         "old_price": "₴399",
-        "link": "https://share.temu.com/power-bank-20000mah",
+        "link": f"https://www.temu.com/ua/search?q=power+bank&refer_code={TEMU_AFFILIATE}",
         "emoji": "⚡"
     },
     
@@ -47,7 +48,7 @@ PRODUCTS = [
         "description": "Комфортные хлопковые футболки. Разные цвета. Скидка 65%!",
         "price": "₴149",
         "old_price": "₴429",
-        "link": "https://share.temu.com/summer-tshirts-3pack",
+        "link": f"https://www.temu.com/ua/search?q=t-shirt+men&refer_code={TEMU_AFFILIATE}",
         "emoji": "👔"
     },
     {
@@ -56,7 +57,7 @@ PRODUCTS = [
         "description": "Удобные кроссовки для спорта и прогулок. Скидка 55%!",
         "price": "₴249",
         "old_price": "₴549",
-        "link": "https://share.temu.com/sports-shoes-sneakers",
+        "link": f"https://www.temu.com/ua/search?q=sports+shoes&refer_code={TEMU_AFFILIATE}",
         "emoji": "🏃"
     },
     {
@@ -65,7 +66,7 @@ PRODUCTS = [
         "description": "Стильная кепка для защиты от солнца. Скидка 60%!",
         "price": "₴79",
         "old_price": "₴199",
-        "link": "https://share.temu.com/baseball-cap-hat",
+        "link": f"https://www.temu.com/ua/search?q=baseball+cap&refer_code={TEMU_AFFILIATE}",
         "emoji": "🎩"
     },
     
@@ -76,7 +77,7 @@ PRODUCTS = [
         "description": "Мягкое постельное белье 4 предмета. Скидка 50%!",
         "price": "₴299",
         "old_price": "₴599",
-        "link": "https://share.temu.com/bedding-set-sheets",
+        "link": f"https://www.temu.com/ua/search?q=bedding+set&refer_code={TEMU_AFFILIATE}",
         "emoji": "🛌"
     },
     {
@@ -85,7 +86,7 @@ PRODUCTS = [
         "description": "Красивые подушки для дивана. Разные узоры. Скидка 55%!",
         "price": "₴129",
         "old_price": "₴289",
-        "link": "https://share.temu.com/decorative-pillows",
+        "link": f"https://www.temu.com/ua/search?q=decorative+pillows&refer_code={TEMU_AFFILIATE}",
         "emoji": "🎀"
     },
     {
@@ -94,7 +95,7 @@ PRODUCTS = [
         "description": "Энергосберегающие LED лампы. Скидка 60%!",
         "price": "₴99",
         "old_price": "₴249",
-        "link": "https://share.temu.com/led-light-bulbs",
+        "link": f"https://www.temu.com/ua/search?q=led+bulbs&refer_code={TEMU_AFFILIATE}",
         "emoji": "💡"
     },
     
@@ -105,7 +106,7 @@ PRODUCTS = [
         "description": "Полный набор косметики для макияжа. Скидка 65%!",
         "price": "₴179",
         "old_price": "₴509",
-        "link": "https://share.temu.com/makeup-set-cosmetics",
+        "link": f"https://www.temu.com/ua/search?q=makeup+set&refer_code={TEMU_AFFILIATE}",
         "emoji": "💅"
     },
     {
@@ -114,7 +115,7 @@ PRODUCTS = [
         "description": "Тканевые маски для лица. Разные типы. Скидка 50%!",
         "price": "₴89",
         "old_price": "₴179",
-        "link": "https://share.temu.com/face-mask-sheet",
+        "link": f"https://www.temu.com/ua/search?q=face+mask&refer_code={TEMU_AFFILIATE}",
         "emoji": "🧖"
     },
     {
@@ -123,7 +124,7 @@ PRODUCTS = [
         "description": "Шампунь, кондиционер, маска. Скидка 55%!",
         "price": "₴149",
         "old_price": "₴329",
-        "link": "https://share.temu.com/hair-care-set",
+        "link": f"https://www.temu.com/ua/search?q=hair+care&refer_code={TEMU_AFFILIATE}",
         "emoji": "💆"
     },
     
@@ -134,7 +135,7 @@ PRODUCTS = [
         "description": "Регулируемые гантели 2-10 кг. Скидка 50%!",
         "price": "₴249",
         "old_price": "₴499",
-        "link": "https://share.temu.com/dumbbells-weights",
+        "link": f"https://www.temu.com/ua/search?q=dumbbells&refer_code={TEMU_AFFILIATE}",
         "emoji": "💪"
     },
     {
@@ -143,7 +144,7 @@ PRODUCTS = [
         "description": "Нескользящий коврик для йоги и фитнеса. Скидка 60%!",
         "price": "₴99",
         "old_price": "₴249",
-        "link": "https://share.temu.com/yoga-mat",
+        "link": f"https://www.temu.com/ua/search?q=yoga+mat&refer_code={TEMU_AFFILIATE}",
         "emoji": "🧘"
     },
     {
@@ -152,7 +153,7 @@ PRODUCTS = [
         "description": "Умный браслет с пульсометром и шагомером. Скидка 55%!",
         "price": "₴199",
         "old_price": "₴439",
-        "link": "https://share.temu.com/fitness-tracker-band",
+        "link": f"https://www.temu.com/ua/search?q=fitness+tracker&refer_code={TEMU_AFFILIATE}",
         "emoji": "📊"
     },
     
@@ -163,7 +164,7 @@ PRODUCTS = [
         "description": "Антипригарная посуда для всех плит. Скидка 50%!",
         "price": "₴349",
         "old_price": "₴699",
-        "link": "https://share.temu.com/cookware-set-pots-pans",
+        "link": f"https://www.temu.com/ua/search?q=cookware+set&refer_code={TEMU_AFFILIATE}",
         "emoji": "🍽️"
     },
     {
@@ -172,7 +173,7 @@ PRODUCTS = [
         "description": "Острые кухонные ножи из нержавейки. Скидка 55%!",
         "price": "₴129",
         "old_price": "₴289",
-        "link": "https://share.temu.com/kitchen-knife-set",
+        "link": f"https://www.temu.com/ua/search?q=knife+set&refer_code={TEMU_AFFILIATE}",
         "emoji": "🥘"
     },
     {
@@ -181,7 +182,7 @@ PRODUCTS = [
         "description": "Красивые стаканы для напитков. Скидка 60%!",
         "price": "₴79",
         "old_price": "₴199",
-        "link": "https://share.temu.com/glass-cups-set",
+        "link": f"https://www.temu.com/ua/search?q=glass+cups&refer_code={TEMU_AFFILIATE}",
         "emoji": "🍷"
     },
 ]
